@@ -1,404 +1,263 @@
-# TIGER SHOP — HỆ THỐNG THƯƠNG MẠI ĐIỆN TỬ TÍCH HỢP AI
+# TIGER SHOP — Hệ thống thương mại điện tử tích hợp Chatbot AI
 
-Tiger Shop là hệ thống website thương mại điện tử hỗ trợ bán hàng trực tuyến, quản lý sản phẩm, đơn hàng, khách hàng, nhân sự và chăm sóc khách hàng thông qua Chatbot AI và hệ thống trò chuyện thời gian thực.
+> Website bán hàng đa ngành, quản lý đơn hàng, sản phẩm, nhân sự và chăm sóc khách hàng bằng trò chuyện trực tuyến và trợ lý AI.
 
-Dự án được phát triển với ReactJS, Node.js, ExpressJS và MySQL.
+**Công nghệ:** ReactJS (Create React App) · Node.js · ExpressJS · MySQL · JWT · Socket.IO · Gemini API.
 
-## 1. Công nghệ sử dụng
+**Mã nguồn:** https://github.com/Quocanhng2710/web-nc
 
-| Thành phần | Công nghệ |
+## Mục lục
+
+- [Giới thiệu và hình ảnh](#1-giới-thiệu-và-hình-ảnh)
+- [Các chức năng theo vai trò](#2-các-chức-năng-theo-vai-trò)
+- [Yêu cầu cài đặt](#3-yêu-cầu-cài-đặt)
+- [Tải và cài đặt dự án](#4-tải-và-cài-đặt-dự-án)
+- [Cấu hình cơ sở dữ liệu](#5-cấu-hình-cơ-sở-dữ-liệu)
+- [Cấu hình Backend](#6-cấu-hình-backend)
+- [Khởi động website](#7-khởi-động-website)
+- [Đăng nhập và sử dụng](#8-đăng-nhập-và-sử-dụng)
+- [Lỗi thường gặp](#9-lỗi-thường-gặp)
+- [Lưu ý bàn giao](#10-lưu-ý-bàn-giao)
+
+## 1. Giới thiệu và hình ảnh
+
+Các ảnh dưới đây được trích từ **Chương 5 – Cài đặt và kết quả thử nghiệm** của báo cáo dự án. Ảnh có tính chất minh họa giao diện tại thời điểm chụp; giao diện thực tế có thể thay đổi theo phiên bản source.
+
+### Giao diện dành cho khách hàng
+
+**Trang chủ**
+
+![Trang chủ Tiger Shop](docs/images/trang-chu.jpg)
+
+**Danh sách, tìm kiếm và lọc sản phẩm**
+
+![Danh sách sản phẩm](docs/images/danh-sach-san-pham.jpg)
+
+**Thông tin chi tiết sản phẩm**
+
+![Chi tiết sản phẩm](docs/images/chi-tiet-san-pham.jpg)
+
+**Giỏ hàng**
+
+![Giỏ hàng](docs/images/gio-hang.jpg)
+
+**Thanh toán**
+
+![Thanh toán](docs/images/thanh-toan.jpg)
+
+**Trợ lý AI tư vấn**
+
+![Chatbot AI](docs/images/chatbot-ai.jpg)
+
+**Chat trực tuyến**
+
+![Chat khách hàng](docs/images/chat-khach-hang.jpg)
+
+### Giao diện Admin
+
+**Tổng quan quản trị**
+
+![Dashboard Admin](docs/images/admin-dashboard.jpg)
+
+**Báo cáo doanh thu**
+
+![Doanh thu](docs/images/admin-doanh-thu.jpg)
+
+**Quản lý tài khoản người dùng**
+
+![Người dùng](docs/images/admin-nguoi-dung.jpg)
+
+**Nhật ký hệ thống**
+
+![Nhật ký hệ thống](docs/images/admin-nhat-ky.jpg)
+
+### Giao diện Manager
+
+**Tổng quan quản lý**
+
+![Dashboard Manager](docs/images/manager-dashboard.jpg)
+
+**Quản lý sản phẩm / kho**
+
+![Quản lý sản phẩm](docs/images/manager-san-pham.jpg)
+
+**Quản lý nhân sự**
+
+![Quản lý nhân sự](docs/images/manager-nhan-su.jpg)
+
+**Quản lý voucher**
+
+![Voucher](docs/images/manager-voucher.jpg)
+
+### Giao diện Staff
+
+**Chấm công**
+
+![Chấm công nhân viên](docs/images/staff-cham-cong.jpg)
+
+**Tổng quan công việc**
+
+![Tổng quan nhân viên](docs/images/staff-tong-quan.jpg)
+
+**Xử lý đơn hàng**
+
+![Xử lý đơn hàng](docs/images/staff-don-hang.jpg)
+
+**Chat với khách hàng**
+
+![Nhân viên chat](docs/images/staff-chat.jpg)
+
+## 2. Các chức năng theo vai trò
+
+| Vai trò | Nhóm chức năng theo báo cáo |
 |---|---|
-| Frontend | ReactJS, HTML, CSS, Bootstrap |
-| Backend | Node.js, ExpressJS |
-| Database | MySQL |
-| Xác thực | JWT, bcrypt |
-| Chat thời gian thực | Socket.IO |
-| AI Chatbot | Google Generative AI (Gemini) |
-| Giao tiếp | REST API, WebSocket |
-| Quản lý mã nguồn | Git, GitHub |
+| **Customer** | Đăng ký/đăng nhập; tìm kiếm, xem sản phẩm; giỏ hàng; đặt và theo dõi đơn; voucher; chat AI và nhân viên; yêu cầu đổi/trả |
+| **Admin** | Quản trị người dùng và phân quyền; kiểm tra nhật ký; theo dõi báo cáo quản trị |
+| **Manager** | Quản lý sản phẩm/kho; nhân sự; ca làm, lương; voucher; thống kê và yêu cầu đổi/trả |
+| **Staff** | Chấm công, đăng ký ca; xem lương; xử lý đơn hàng; tư vấn khách hàng qua chat |
 
-## 2. Cấu trúc dự án
+> Danh sách dựa trên tài liệu phân tích và ảnh báo cáo. Cần kiểm thử trên database của máy cài đặt để xác nhận hoạt động end-to-end của từng chức năng.
 
-```text
-Tiger-Shop/
-├── backend/
-│   ├── config/          # Cấu hình hệ thống và database
-│   ├── controllers/     # Xử lý request
-│   ├── middlewares/     # Xác thực, phân quyền
-│   ├── models/          # Xử lý dữ liệu
-│   ├── routes/          # Định nghĩa API
-│   ├── services/        # Xử lý nghiệp vụ
-│   ├── utils/           # Tiện ích
-│   ├── server.js        # Khởi động backend
-│   └── package.json
-├── frontend/
-│   ├── public/
-│   ├── src/
-│   ├── package.json
-│   └── package-lock.json
-├── database/
-│   ├── ecommerce.sql
-│   └── migrations/
-├── package.json
-└── README.md
-```
+## 3. Yêu cầu cài đặt
 
-## 3. Yêu cầu trước khi cài đặt
+- Windows 10 hoặc 11.
+- Node.js và npm (Node v22.20.0 từng được dùng để kiểm tra source; **phiên bản tối thiểu chưa xác minh**).
+- MySQL / MariaDB (có thể cài qua Laragon hoặc dùng MySQL Server riêng).
+- VS Code hoặc Terminal PowerShell.
+- Kết nối Internet để tải thư viện npm.
 
-Máy tính cần có:
-
-- Windows 10/11.
-- Node.js và npm.
-- MySQL Server hoặc Laragon/XAMPP có MySQL.
-- Visual Studio Code (khuyến nghị).
-- Git (nếu tải mã nguồn bằng lệnh clone).
-- Trình duyệt Chrome hoặc Edge.
-- Kết nối Internet để tải thư viện.
-
-Phiên bản Node.js 22.20.0 đã được sử dụng trong quá trình kiểm tra mã nguồn. Phiên bản Node.js tối thiểu chưa được xác minh.
-
-Kiểm tra Node.js và npm:
+Kiểm tra môi trường:
 
 ```powershell
 node -v
 npm -v
 ```
 
-## 4. Tải mã nguồn
+## 4. Tải và cài đặt dự án
 
-Truy cập:
+**Tải ZIP:** tại trang repository chọn **Code → Download ZIP**, giải nén, mở thư mục `web-nc`.
 
-https://github.com/Quocanhng2710/web-nc
-
-Chọn **Code → Download ZIP**, sau đó giải nén vào thư mục mong muốn.
-
-Hoặc sử dụng Git:
+**Hoặc clone bằng Git:**
 
 ```powershell
 git clone https://github.com/Quocanhng2710/web-nc.git
 cd web-nc
 ```
 
-Mở thư mục dự án bằng Visual Studio Code.
+Cấu trúc cần có:
 
-## 5. Cài đặt cơ sở dữ liệu MySQL
+```text
+web-nc/
+├── backend/       # Express API, Socket.IO
+├── frontend/      # React UI
+├── database/      # ecommerce.sql, migrations
+├── docs/images/   # Hình ảnh giao diện trong README
+└── README.md
+```
 
-### Bước 1: Khởi động MySQL
+Không cần copy `node_modules` từ máy phát triển. Mỗi máy cần tự cài dependencies qua `npm install`.
 
-Nếu sử dụng Laragon:
+## 5. Cấu hình cơ sở dữ liệu
 
-1. Mở Laragon.
-2. Chọn Start All.
-3. Kiểm tra MySQL đã hoạt động.
-4. Mở phpMyAdmin hoặc công cụ quản trị MySQL.
-
-### Bước 2: Tạo database
-
-Chạy lệnh:
+1. Mở Laragon và khởi động **MySQL**, hoặc khởi động dịch vụ MySQL trên máy.
+2. Mở phpMyAdmin/MySQL Workbench và tạo database:
 
 ```sql
 CREATE DATABASE IF NOT EXISTS ecommerce
-CHARACTER SET utf8mb4
-COLLATE utf8mb4_unicode_ci;
+  CHARACTER SET utf8mb4
+  COLLATE utf8mb4_unicode_ci;
 ```
 
-### Bước 3: Import cơ sở dữ liệu
+3. Import file `database/ecommerce.sql` vào database `ecommerce`.
+4. Kiểm tra cấu trúc và dữ liệu của các bảng trước khi chạy ứng dụng.
+5. Kiểm tra `backend/config/db.js`: trong source được audit, cấu hình kết nối MySQL viết trực tiếp trong file (host `localhost`, user `root`, database `ecommerce`, mật khẩu rỗng). **Phải chỉnh đúng theo máy cài đặt**, không giả định tất cả máy có tài khoản root không mật khẩu.
 
-Trong phpMyAdmin:
+**Quan trọng:** Thư mục `database/migrations/` có nhiều file SQL, nhưng chưa có bằng chứng về một trình chạy migration tự động. Không chạy tất cả script trên database có dữ liệu khi chưa sao lưu và kiểm tra vì một số script thay đổi cấu trúc/dữ liệu. Nếu cần các chức năng mới, phải xác minh migration nào đã nằm trong `ecommerce.sql` và migration nào còn thiếu.
 
-1. Chọn database `ecommerce`.
-2. Chọn tab Import.
-3. Chọn file `database/ecommerce.sql`.
-4. Nhấn Import/Go.
-5. Kiểm tra các bảng đã được tạo.
+## 6. Cấu hình Backend
 
-Dự án có các migration SQL từ `001` đến `014` trong `database/migrations/`.
-
-**Lưu ý:** Không tự động chạy toàn bộ migration khi chưa kiểm tra trạng thái database. Một số migration có thể thay đổi cấu trúc hoặc dữ liệu hiện có.
-
-Để sử dụng đầy đủ các chức năng, có thể cần thêm dữ liệu mẫu và cấu trúc được cập nhật sau schema gốc.
-
-### Bước 4: Cấu hình kết nối
-
-Mở:
-
-```text
-backend/config/db.js
-```
-
-Cấu hình kết nối đang được khai báo trực tiếp bằng các thông số như:
-
-- Host: `localhost`
-- Username: `root`
-- Database: `ecommerce`
-- Password: theo cấu hình MySQL trên máy cài đặt.
-
-**Quan trọng:** File `db.js` hiện chưa đọc đầy đủ cấu hình database từ biến môi trường. Nếu MySQL trên máy sử dụng tài khoản hoặc mật khẩu khác, cần cập nhật cấu hình kết nối tương ứng trước khi chạy.
-
-Không đưa mật khẩu database thật lên GitHub.
-
-## 6. Cài đặt Backend
-
-Mở Terminal trong VS Code:
+Mở Terminal trong thư mục gốc dự án:
 
 ```powershell
 cd backend
 npm install
 ```
 
-Lệnh này tự động cài đặt các thư viện được khai báo trong `backend/package.json`.
-
-### Tạo file môi trường
-
-Tạo file:
-
-```text
-backend/.env
-```
-
-Nội dung tham khảo:
+Tạo file `backend/.env` nếu chưa tồn tại, ví dụ:
 
 ```dotenv
 PORT=5000
-JWT_SECRET=THAY_BANG_CHUOI_BI_MAT_DU_MẠNH
-
+JWT_SECRET=THAY_BANG_CHUOI_BI_MAT_DAI_NGAU_NHIEN
 GEMINI_API_KEY=
 GEMINI_API_KEY_SALE=
 GEMINI_API_KEY_RETURN=
 GEMINI_API_KEY_VOUCHER=
 ```
 
-Các API key Gemini cần được cung cấp hợp lệ nếu sử dụng các chức năng AI tương ứng.
+- `JWT_SECRET` cần giá trị bí mật mạnh để hỗ trợ xác thực.
+- Các key Gemini dùng cho tính năng AI tương ứng; không có key có thể khiến chức năng AI không dùng được.
+- **Không đăng `.env` hay key thật lên GitHub.**
+- Database vẫn cần cấu hình qua `backend/config/db.js` nếu source chưa được chỉnh để đọc `DB_*` từ `.env`.
 
-Không chia sẻ hoặc commit file `.env` chứa khóa thật.
-
-### Chạy Backend
+Chạy backend:
 
 ```powershell
 node server.js
 ```
 
-Khi khởi động thành công, terminal sẽ hiển thị thông báo tương tự:
+Kết quả mong đợi: backend lắng nghe tại `http://localhost:5000`. Giữ Terminal mở.
 
-```text
-Backend running on http://localhost:5000
-```
+## 7. Khởi động website
 
-Giữ nguyên cửa sổ Terminal này để backend tiếp tục hoạt động.
-
-## 7. Cài đặt Frontend
-
-Mở Terminal mới trong VS Code.
-
-Từ thư mục gốc của dự án:
+Mở **Terminal PowerShell thứ hai** từ thư mục gốc `web-nc`:
 
 ```powershell
 cd frontend
 npm install
-```
-
-Sau khi cài đặt xong, chạy:
-
-```powershell
 npm start
 ```
 
-Ứng dụng React sẽ khởi động tại:
+Truy cập website: **http://localhost:3000**.
 
-http://localhost:3000
+- Frontend là ứng dụng Create React App, khai báo proxy backend tới `http://localhost:5000`.
+- Một số component dùng URL API trực tiếp, nên **backend cần chạy đúng cổng 5000** nếu chưa sửa đồng bộ các địa chỉ API.
+- Mỗi lần khởi động lại máy: bật MySQL → `node server.js` trong `backend` → `npm start` trong `frontend`.
+- Dừng server bằng `Ctrl + C` trong Terminal tương ứng.
 
-Lưu ý: Backend phải đang chạy trên cổng `5000` để các chức năng gọi API hoạt động đúng theo cấu hình hiện tại.
+## 8. Đăng nhập và sử dụng
 
-## 8. Hướng dẫn sử dụng
+Trang đăng nhập chung: **http://localhost:3000/login**. Đăng ký khách hàng: **http://localhost:3000/register**.
 
-### 8.1. Khách hàng (Customer)
-
-Trang đăng ký:
-
-http://localhost:3000/register
-
-Trang đăng nhập:
-
-http://localhost:3000/login
-
-Sau khi đăng nhập thành công, người dùng được điều hướng đến `/home`.
-
-Các chức năng chính:
-
-- Xem danh sách sản phẩm.
-- Tìm kiếm và lọc sản phẩm.
-- Xem thông tin chi tiết sản phẩm.
-- Thêm sản phẩm vào giỏ hàng.
-- Đặt hàng và lựa chọn phương thức thanh toán.
-- Áp dụng mã voucher.
-- Xem và theo dõi đơn hàng.
-- Gửi yêu cầu đổi trả hoặc bảo hành.
-- Nhận thông báo.
-- Chat với nhân viên hoặc Chatbot AI.
-- Cập nhật thông tin cá nhân.
-
-### 8.2. Quản trị viên (Admin)
-
-Sau khi đăng nhập, tài khoản Admin được điều hướng tới:
-
-http://localhost:3000/admin/dashboard
-
-Các chức năng chính:
-
-- Xem tổng quan hệ thống.
-- Quản lý tài khoản người dùng.
-- Phân quyền tài khoản.
-- Quản lý trạng thái người dùng.
-- Xem lịch sử hoạt động và nhật ký hệ thống.
-- Thực hiện các nghiệp vụ quản trị được phân quyền.
-
-### 8.3. Quản lý (Manager)
-
-Sau khi đăng nhập, tài khoản Manager được điều hướng tới:
-
-http://localhost:3000/manager/workspace
-
-Các chức năng chính:
-
-- Quản lý sản phẩm và kho hàng.
-- Theo dõi đơn hàng.
-- Quản lý nhân viên.
-- Quản lý lịch làm việc.
-- Theo dõi chấm công.
-- Xem bảng lương nhân viên.
-- Quản lý voucher.
-- Xem báo cáo thống kê.
-- Xử lý các yêu cầu nhân sự theo quyền được cấp.
-
-### 8.4. Nhân viên (Staff)
-
-Sau khi đăng nhập, tài khoản Staff được điều hướng tới:
-
-http://localhost:3000/staff/workspace
-
-Các chức năng chính:
-
-- Xem tổng quan công việc.
-- Chấm công vào/ra ca.
-- Đăng ký lịch làm việc.
-- Xử lý đơn hàng.
-- Chat và hỗ trợ khách hàng.
-- Xem bảng lương và hoa hồng.
-- Gửi yêu cầu nghỉ phép hoặc đi muộn.
-
-## 9. Thiết lập tài khoản Admin, Manager và Staff
-
-Hệ thống có các vai trò:
-
-| Vai trò | Quyền sử dụng |
+| Vai trò | Đường dẫn sau đăng nhập |
 |---|---|
-| ADMIN | Quản trị hệ thống |
-| MANAGER | Quản lý cửa hàng và nhân sự |
-| STAFF | Thực hiện nghiệp vụ nhân viên |
-| CUSTOMER | Mua sắm và quản lý đơn hàng cá nhân |
+| Customer | `/home` |
+| Admin | `/admin/dashboard` |
+| Manager | `/manager/workspace` |
+| Staff | `/staff/workspace` |
 
-**Chú ý:** Quy trình tạo tài khoản Admin đầu tiên và dữ liệu tài khoản mặc định hiện chưa được xác minh đầy đủ.
+**Thiết lập tài khoản ban đầu:** Dự án chưa xác minh được quy trình khởi tạo Admin đầu tiên và mật khẩu mặc định an toàn. Có mâu thuẫn cần kiểm tra giữa role ID trong schema, migration và controller đăng ký. Người triển khai phải xác minh dữ liệu bảng `roles`, cách cấp quyền và tạo tài khoản hợp lệ trước khi đưa cho người sử dụng. Không công bố mật khẩu thật trong README.
 
-Source cũng có điểm cần kiểm tra giữa dữ liệu role trong schema gốc, migration và chức năng đăng ký khách hàng.
+## 9. Lỗi thường gặp
 
-Do đó, trước khi sử dụng, cần kiểm tra database thực tế và đảm bảo tài khoản được gán đúng vai trò.
-
-Không có mật khẩu mẫu được công bố trong tài liệu này. Người triển khai cần thiết lập tài khoản hợp lệ và bàn giao thông tin đăng nhập riêng qua kênh an toàn.
-
-## 10. Các chức năng nổi bật
-
-### Quản lý bán hàng
-
-Hỗ trợ danh mục, sản phẩm, biến thể, giỏ hàng, đơn hàng, voucher và quản lý trạng thái xử lý đơn.
-
-### Hệ thống Chatbot AI
-
-Tích hợp các chức năng hỗ trợ tư vấn khách hàng thông qua Google Generative AI. Những chức năng này phụ thuộc vào API key và cấu hình tương ứng.
-
-### Chat thời gian thực
-
-Sử dụng Socket.IO để trao đổi dữ liệu giữa khách hàng và nhân viên mà không cần tải lại trang.
-
-### Quản lý nhân sự
-
-Hỗ trợ ca làm, chấm công, quản lý yêu cầu nhân sự, lương và hoa hồng.
-
-### Quản trị và thống kê
-
-Cung cấp giao diện theo dõi hoạt động quản lý, doanh thu, tài khoản và các nghiệp vụ nội bộ.
-
-## 11. Các lỗi thường gặp
-
-| Lỗi | Hướng xử lý |
+| Triệu chứng | Cách kiểm tra |
 |---|---|
-| `npm is not recognized` | Cài đặt Node.js và mở lại Terminal |
-| `Cannot find module` | Chạy `npm install` đúng thư mục |
-| Backend không kết nối MySQL | Kiểm tra MySQL và `backend/config/db.js` |
-| Port 5000 bị chiếm | Giải phóng cổng hoặc điều chỉnh cấu hình đồng bộ |
-| Port 3000 bị chiếm | Kiểm tra tiến trình sử dụng cổng |
-| Frontend không gọi được API | Kiểm tra backend, proxy và địa chỉ API |
-| Không đăng nhập được | Kiểm tra JWT secret, database và role |
-| Chat không hoạt động | Kiểm tra Socket.IO và kết nối backend |
-| AI không phản hồi | Kiểm tra Gemini API key, quota và cấu hình |
-| Import SQL thất bại | Kiểm tra cấu trúc bảng, migration và lỗi SQL cụ thể |
+| `npm` không nhận diện | Cài Node.js rồi mở Terminal mới |
+| `Cannot find module` | Chạy `npm install` trong đúng `backend` hoặc `frontend` |
+| Không kết nối MySQL | MySQL đã bật chưa? Database `ecommerce` có tồn tại? Thông số trong `backend/config/db.js` có đúng? |
+| Không đăng nhập được | Kiểm tra database, `JWT_SECRET`, role ID và tài khoản khởi tạo |
+| Frontend không gọi được API | Kiểm tra backend cổng 5000 và proxy/API URL |
+| Socket.IO lỗi | Kiểm tra backend và URL kết nối WebSocket |
+| AI không phản hồi | Kiểm tra key Gemini, quyền truy cập/quota và log backend |
+| SQL báo trùng bảng/cột | Không chạy lại migration khi chưa kiểm tra phiên bản schema và sao lưu |
 
-## 12. Kiểm tra sau cài đặt
+## 10. Lưu ý bàn giao
 
-Sau khi hoàn thành, cần thử nghiệm các thao tác:
-
-- [ ] Backend khởi động thành công.
-- [ ] Frontend truy cập được tại localhost:3000.
-- [ ] Backend kết nối database thành công.
-- [ ] Hiển thị được sản phẩm.
-- [ ] Đăng ký và đăng nhập Customer thành công.
-- [ ] Đăng nhập Admin thành công.
-- [ ] Đăng nhập Manager thành công.
-- [ ] Đăng nhập Staff thành công.
-- [ ] Đặt và xử lý đơn hàng.
-- [ ] Chat giữa nhân viên và khách hàng.
-- [ ] Kiểm tra chức năng AI nếu đã cấu hình API key.
-- [ ] Kiểm tra phân quyền giữa các vai trò.
-
-## 13. Lưu ý bảo mật và triển khai
-
-- Đây là hướng dẫn chạy ứng dụng trong môi trường localhost.
-- Không sử dụng trực tiếp cấu hình phát triển để triển khai production.
-- Không công khai `.env`, mật khẩu database hoặc API key.
-- Đổi mật khẩu các tài khoản thử nghiệm trước khi đưa vào sử dụng thực tế.
-- Sao lưu database trước khi thực hiện migration.
-- Kiểm tra quyền truy cập API ở backend.
-- Đảm bảo dữ liệu nhạy cảm không bị gửi hoặc lưu trữ không cần thiết.
-
-## 14. Khởi động lại hệ thống trong những lần sử dụng sau
-
-Sau lần cài đặt đầu tiên, thông thường không cần chạy lại `npm install` nếu dependencies không thay đổi.
-
-Mỗi lần sử dụng:
-
-**Bước 1:** Khởi động MySQL.
-
-**Bước 2:** Mở Terminal backend:
-
-```powershell
-cd backend
-node server.js
-```
-
-**Bước 3:** Mở Terminal thứ hai tại thư mục gốc dự án:
-
-```powershell
-cd frontend
-npm start
-```
-
-**Bước 4:** Truy cập:
-
-http://localhost:3000
-
-Để dừng server, nhấn `Ctrl + C` trong Terminal tương ứng.
+- Đây là hướng dẫn chạy **local**, chưa phải hướng dẫn triển khai production.
+- Source code và schema SQL **không nhất thiết bao gồm dữ liệu thực tế** (sản phẩm, tài khoản demo, đơn hàng). Nếu muốn khách xem đúng nội dung demo, cần bàn giao bản dữ liệu mẫu đã được kiểm tra và loại bỏ dữ liệu nhạy cảm.
+- Không công khai `.env`, password, JWT secret, API key, thông tin khách hàng hoặc tài khoản thực.
+- Chưa thể xác nhận toàn bộ tính năng chạy được trên máy sạch nếu chưa nghiệm thu việc import database, đồng bộ role và tạo Admin đầu tiên.
+- Các ảnh được trích từ báo cáo để minh họa, không phải kết quả kiểm thử runtime hiện tại.
 
 ---
 
-**Tiger Shop — Hệ thống thương mại điện tử tích hợp Chatbot AI**
-
-*Tài liệu hướng dẫn cài đặt và sử dụng trên môi trường localhost. Một số quy trình thiết lập database và tài khoản quản trị cần được xác minh trên môi trường triển khai thực tế.*
+**Tiger Shop — Website thương mại điện tử tích hợp Chatbot AI**
